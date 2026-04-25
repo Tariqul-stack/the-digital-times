@@ -1,5 +1,6 @@
 import Image from "next/image";
 import logo from "@/assets/logo.png";
+import { format } from "date-fns";
 
 const Header = () => {
   return (
@@ -12,7 +13,7 @@ const Header = () => {
         className="mx-auto"
       />
       <p>Journalism Without Fear or Favour</p>
-      <p>Sunday, November 27, 2025</p>
+      <p>{format(new Date(), "EEEE, MMM dd, yyyy")}</p>
     </div>
   );
 };
