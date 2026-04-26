@@ -1,40 +1,42 @@
 import LeftSidebar from "@/components/homepage/news/LeftSidebar";
+import NewsCard from "@/components/homepage/news/NewsCard";
 import RightSidebar from "@/components/homepage/news/RightSidebar";
-
-async function getCategories() {
-  const res = await fetch(
-    "https://openapi.programming-hero.com/api/news/categories",
-  );
-  const data = await res.json();
-  return data.data.news_category;
-}
-async function getNewsByCategoryId(category_id) {
-  const res = await fetch(
-    `https://openapi.programming-hero.com/api/news/category/${category_id}`,
-  );
-  const data = await res.json();
-  return data.data;
-}
+import { redirect } from "next/navigation";
+import { getCategories, getNewsByCategoryId } from "@/lib/news";
 
 const NewsCategory = async ({ params }) => {
   const { id } = await params;
-  console.log(id, "paramRes");
   const categories = await getCategories();
-  const news = await getNewsByCategoryId(id);
+  const activeCategory = categories.find((category) => category.category_id === id);
+
+  if (!activeCategory && categories[0]?.category_id) {
+    redirect(`/category/${categories[0].category_id}`);
+  }
+
+  const selectedCategory = activeCategory ?? {
+    category_id: "01",
+    category_name: "All Categories",
+  };
+  const news = await getNewsByCategoryId(selectedCategory.category_id);
+
   return (
     <div className="grid grid-cols-12 gap-5 container mx-auto p-10">
       <div className="col-span-3">
-        <LeftSidebar categories={categories} activeId={id}></LeftSidebar>
+        <LeftSidebar
+          categories={categories}
+          activeId={selectedCategory.category_id}
+        />
       </div>
 
-      {/* Middle */}
       <div className="col-span-6">
-        <h2 className="text-3xl font-bold mb-2">All News</h2>
+        <h2 className="mb-2 text-3xl font-bold">
+          {selectedCategory.category_name}
+        </h2>
 
         {news.length > 0 ? (
-          news?.map((n) => (
-            <div key={n._id} className="bg-pink-100 p-3 mb-3 rounded">
-              {n.title}
+          news.map((n) => (
+            <div key={n._id} className="mb-6">
+              <NewsCard news={n} />
             </div>
           ))
         ) : (
@@ -44,8 +46,7 @@ const NewsCategory = async ({ params }) => {
         )}
       </div>
 
-      {/* Right */}
-      <div className=" col-span-3">
+      <div className="col-span-3">
         <RightSidebar />
       </div>
     </div>
