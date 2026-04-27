@@ -2,7 +2,11 @@ import LeftSidebar from "@/components/homepage/news/LeftSidebar";
 import NewsCard from "@/components/homepage/news/NewsCard";
 import RightSidebar from "@/components/homepage/news/RightSidebar";
 import { redirect } from "next/navigation";
-import { getCategories, getNewsByCategoryId } from "@/lib/news";
+import {
+  getCategories,
+  getNewsByCategoryId,
+  withMinimumDelay,
+} from "@/lib/news";
 
 const NewsCategory = async ({ params }) => {
   const { id } = await params;
@@ -17,7 +21,9 @@ const NewsCategory = async ({ params }) => {
     category_id: "01",
     category_name: "All Categories",
   };
-  const news = await getNewsByCategoryId(selectedCategory.category_id);
+  const news = await withMinimumDelay(
+    getNewsByCategoryId(selectedCategory.category_id),
+  );
 
   return (
     <div className="grid grid-cols-12 gap-5 container mx-auto p-10">

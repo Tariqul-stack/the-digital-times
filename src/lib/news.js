@@ -1,4 +1,14 @@
 const API_BASE_URL = "https://openapi.programming-hero.com/api/news";
+export const LOADING_DELAY_MS = 30000;
+
+export async function withMinimumDelay(task, delayMs = LOADING_DELAY_MS) {
+  const [result] = await Promise.all([
+    Promise.resolve(task),
+    new Promise((resolve) => setTimeout(resolve, delayMs)),
+  ]);
+
+  return result;
+}
 
 export async function getCategories() {
   const res = await fetch(`${API_BASE_URL}/categories`, {
