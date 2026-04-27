@@ -27,7 +27,7 @@ const getPreviewText = (details) => {
   return details.length > 180 ? `${details.slice(0, 180)}...` : details;
 };
 
-const NewsCard = ({ news }) => {
+const NewsCard = ({ news, categoryId }) => {
   const {
     _id,
     title,
@@ -100,7 +100,10 @@ const NewsCard = ({ news }) => {
 
         <p className="mt-9 text-[1rem] leading-[1.75] text-[#706f6f]">
           {getPreviewText(details)}{" "}
-          <Link href={`/news/${_id}`} className="font-semibold text-[#ff8c47]">
+          <Link
+            href={`/news/${_id}?category=${categoryId}`}
+            className="font-semibold text-[#ff8c47]"
+          >
             Read More
           </Link>
         </p>

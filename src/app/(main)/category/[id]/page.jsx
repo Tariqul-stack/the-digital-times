@@ -42,7 +42,7 @@ const NewsCategory = async ({ params }) => {
         {news.length > 0 ? (
           news.map((n) => (
             <div key={n._id} className="mb-6">
-              <NewsCard news={n} />
+              <NewsCard news={n} categoryId={selectedCategory.category_id} />
             </div>
           ))
         ) : (
