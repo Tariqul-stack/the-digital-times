@@ -13,7 +13,7 @@ const LoginPage = () => {
     e.preventDefault();
     setLoading(true);
     // TODO: add your auth logic here
-    setTimeout(() => setLoading(false), 1500);
+    setTimeout(() => setLoading(false), 500);
   };
 
   return (
@@ -153,7 +153,7 @@ const LoginPage = () => {
           <p className="text-center text-sm text-[#777] font-semibold mt-6">
             Don&apos;t Have An Account?{" "}
             <Link
-              href="/register"
+              href="/auth/register"
               className="text-[#e05c5c] font-bold hover:underline"
             >
               Register
